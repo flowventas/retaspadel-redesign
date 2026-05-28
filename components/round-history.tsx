@@ -10,25 +10,27 @@ type RoundHistoryProps = {
 
 export function RoundHistory({ rounds, names, onEdit, editableRoundId }: RoundHistoryProps) {
   return (
-    <div className="grid min-w-0 gap-4">
+    <div className="grid min-w-0 gap-3">
       {rounds.map((round) => (
-        <section key={round.id} className="app-card min-w-0 p-4 sm:p-5">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <section key={round.id} className="min-w-0 border border-[var(--s-line)] bg-[var(--s-surf)] p-4">
+          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-3">
-                <h4 className="text-lg font-black text-[var(--app-text)]">Ronda {round.number}</h4>
+                <h4 className="font-display text-[28px] uppercase leading-none text-[var(--s-text)]">
+                  Ronda <span className="italic text-[var(--s-lime)]">{String(round.number).padStart(2, "0")}</span>
+                </h4>
                 <span
-                  className={`rounded-full px-3 py-1 text-xs font-bold ${
+                  className={`border px-3 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.12em] ${
                     round.status === "completed"
-                      ? "bg-[var(--brand-accent-soft)] text-[var(--brand-secondary)]"
-                      : "bg-amber-50 text-amber-700"
+                      ? "border-[var(--s-lime)] text-[var(--s-lime)]"
+                      : "border-[var(--s-amber)] text-[var(--s-amber)]"
                   }`}
                 >
                   {round.status === "completed" ? "Guardada" : "En juego"}
                 </span>
               </div>
               {round.restingPlayerIds.length ? (
-                <p className="mt-2 text-sm text-[var(--muted)]">
+                <p className="mt-2 text-[12px] leading-5 text-[var(--s-mid)]">
                   Descansan: {formatPlayerList(round.restingPlayerIds, names)}
                 </p>
               ) : null}
@@ -38,31 +40,39 @@ export function RoundHistory({ rounds, names, onEdit, editableRoundId }: RoundHi
               <button
                 type="button"
                 onClick={() => onEdit(round.id)}
-                className="app-button app-button-secondary w-full px-4 py-2 text-sm md:w-auto"
+                className="app-button app-button-secondary w-full px-4 py-2 text-[16px] md:w-auto"
               >
                 Editar esta ronda
               </button>
             ) : null}
           </div>
 
-          <div className="mt-4 grid gap-3">
+          <div className="mt-4 grid gap-2">
             {round.matches.map((match) => (
               <div
                 key={match.id}
-                className="flex min-w-0 flex-col gap-2 rounded-[1.25rem] bg-[var(--surface-subtle)] px-3 py-3 text-sm text-[var(--app-text)] md:flex-row md:items-center md:justify-between md:px-4"
+                className="grid min-w-0 grid-cols-[auto_1fr_auto] items-center gap-3 border border-[var(--s-line)] bg-[var(--s-bg)] px-3 py-3 text-[12px] text-[var(--s-text)]"
               >
-                <span className="min-w-0 break-words font-semibold">
-                  Cancha {match.court}: {formatTeam(match, "A", names)}
+                <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--s-mid)]">
+                  C{match.court}
                 </span>
-                <span className="self-start rounded-full bg-[var(--surface-strong)] px-3 py-1 text-center font-black text-[var(--app-text)] md:self-auto">
-                  {match.score ? `${match.score.teamA} - ${match.score.teamB}` : "Sin score"}
+                <span className="min-w-0 leading-5">
+                  <span className="block truncate font-semibold text-[var(--s-text)]">{formatTeam(match, "A", names)}</span>
+                  <span className="block truncate font-semibold text-[var(--s-mid)]">{formatTeam(match, "B", names)}</span>
                 </span>
-                <span className="min-w-0 break-words font-semibold">{formatTeam(match, "B", names)}</span>
+                <span className="font-display text-[22px] italic leading-none text-[var(--s-text)]">
+                  {match.score ? `${match.score.teamA}—${match.score.teamB}` : "—"}
+                </span>
               </div>
             ))}
           </div>
         </section>
       ))}
+      {!rounds.length ? (
+        <div className="border border-dashed border-[var(--s-line-hi)] p-5 text-center font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--s-dim)]">
+          Aun no hay rondas guardadas
+        </div>
+      ) : null}
     </div>
   );
 }
