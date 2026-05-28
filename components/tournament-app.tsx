@@ -232,8 +232,8 @@ export default function TournamentApp() {
           </div>
         </header>
 
-        <section ref={savedSectionRef} className="mt-7 grid gap-7 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.55fr)] lg:items-start">
-          <div className="grid gap-7">
+        <section ref={savedSectionRef} className="mt-7 grid gap-7">
+          <div className="grid gap-7 lg:grid-cols-2 lg:items-start">
             <section>
               <div className="mb-3 flex items-center justify-between gap-3">
                 <p className="s-section-label">
@@ -343,67 +343,6 @@ export default function TournamentApp() {
               )}
             </section>
           </div>
-
-          <aside className="grid gap-7">
-            <section>
-              <div className="mb-3 flex items-center justify-between gap-3">
-                <p className="s-section-label">
-                  <span>03 · </span>Jugadores recientes
-                </p>
-                <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--s-mid)]">
-                  {store.savedPlayers.length}
-                </span>
-              </div>
-              {store.savedPlayers.length ? (
-                <div className="flex flex-wrap gap-2">
-                  {store.savedPlayers.slice(0, 12).map((name) => (
-                    <span
-                      key={name}
-                      className="inline-flex items-center gap-2 border border-[var(--s-line)] bg-[var(--s-surf)] py-1.5 pl-1.5 pr-3"
-                    >
-                      <span className="grid h-5 w-5 place-items-center rounded-full border border-[var(--s-line-hi)] bg-[var(--s-surf-2)] font-display text-[10px] text-[var(--s-text)]">
-                        {playerInitial(name)}
-                      </span>
-                      <span className="text-[12px] font-medium text-[var(--s-text)]">{name}</span>
-                    </span>
-                  ))}
-                  {store.savedPlayers.length > 12 ? (
-                    <span className="inline-flex items-center border border-dashed border-[var(--s-line-hi)] px-3 py-1.5 text-[11px] text-[var(--s-mid)]">
-                      + {store.savedPlayers.length - 12} mas
-                    </span>
-                  ) : null}
-                </div>
-              ) : (
-                <div className="border border-dashed border-[var(--s-line-hi)] p-4">
-                  <p className="text-[12px] leading-5 text-[var(--s-mid)]">
-                    Los jugadores apareceran aqui despues de crear tu primera reta.
-                  </p>
-                </div>
-              )}
-            </section>
-
-            <section>
-              <div className="mb-3">
-                <p className="s-section-label">
-                  <span>04 · </span>Tambien
-                </p>
-              </div>
-              <Link
-                href="/torneos"
-                className="flex items-center justify-between border border-[var(--s-line)] bg-[var(--s-surf)] p-4"
-              >
-                <span>
-                  <span className="block font-mono text-[9px] uppercase tracking-[0.18em] text-[var(--s-mid)]">
-                    Dominio publico
-                  </span>
-                  <span className="mt-1 block font-display text-[26px] uppercase leading-none text-[var(--s-text)]">
-                    6LOCO torneos
-                  </span>
-                </span>
-                <span className="font-display text-[32px] italic text-[var(--s-lime)]">›</span>
-              </Link>
-            </section>
-          </aside>
         </section>
 
         <section ref={formSectionRef} className="mt-8 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.45fr)] lg:items-start">
