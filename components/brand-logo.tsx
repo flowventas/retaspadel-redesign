@@ -27,10 +27,10 @@ export function BrandLogo({ className = "", variant = "hero", theme = "light" }:
 
   return (
     <Image
-      src={theme === "dark" ? "/logo-6loco-dark.png" : "/logo-6loco.png"}
+      src="/wordmark-light-674x336.png"
       alt="6 loco"
-      width={520}
-      height={180}
+      width={674}
+      height={336}
       sizes={
         variant === "hero"
           ? "(max-width: 639px) 108px, (max-width: 767px) 120px, (max-width: 1023px) 138px, 152px"
