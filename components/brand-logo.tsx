@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 type BrandLogoProps = {
@@ -19,26 +20,28 @@ export function BrandLogo({ className = "", variant = "hero", theme = "light" }:
 
   if (hasError) {
     return (
-      <span className={`inline-block font-black tracking-wide text-[var(--brand-accent)] ${className}`}>
+      <Link href="/" className={`inline-block font-black tracking-wide text-[var(--brand-accent)] ${className}`}>
         6 loco
-      </span>
+      </Link>
     );
   }
 
   return (
-    <Image
-      src="/wordmark-light-674x336.png"
-      alt="6 loco"
-      width={674}
-      height={336}
-      sizes={
-        variant === "hero"
-          ? "(max-width: 639px) 108px, (max-width: 767px) 120px, (max-width: 1023px) 138px, 152px"
-          : "(max-width: 639px) 88px, (max-width: 767px) 96px, 110px"
-      }
-      priority={variant === "hero"}
-      onError={() => setHasError(true)}
-      className={`${variantClasses[variant]} ${className}`}
-    />
+    <Link href="/" aria-label="Ir al inicio" className="inline-block">
+      <Image
+        src="/wordmark-light-674x336.png"
+        alt="6 loco"
+        width={674}
+        height={336}
+        sizes={
+          variant === "hero"
+            ? "(max-width: 639px) 108px, (max-width: 767px) 120px, (max-width: 1023px) 138px, 152px"
+            : "(max-width: 639px) 88px, (max-width: 767px) 96px, 110px"
+        }
+        priority={variant === "hero"}
+        onError={() => setHasError(true)}
+        className={`${variantClasses[variant]} ${className}`}
+      />
+    </Link>
   );
 }
