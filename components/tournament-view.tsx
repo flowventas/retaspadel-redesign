@@ -7,7 +7,6 @@ import { BrandLogo } from "@/components/brand-logo";
 import { MatchCard } from "@/components/match-card";
 import { RankingTable } from "@/components/ranking-table";
 import { RoundHistory } from "@/components/round-history";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { exportNodeAsPng } from "@/lib/export-image";
 import { defaultStore, loadStore, saveStore } from "@/lib/storage";
 import {
@@ -60,7 +59,7 @@ export function TournamentView({ tournamentId }: TournamentViewProps) {
     }
 
     saveStore(store);
-    document.documentElement.classList.toggle("dark", store.theme === "dark");
+    document.documentElement.classList.add("dark");
   }, [hasLoadedStore, store]);
 
   useEffect(() => {
@@ -247,13 +246,6 @@ export function TournamentView({ tournamentId }: TournamentViewProps) {
     setToast("Reta cerrada. La tabla de poder actual ya es la final.");
   }
 
-  function handleThemeToggle() {
-    updateStore((current) => ({
-      ...current,
-      theme: current.theme === "dark" ? "light" : "dark",
-    }));
-  }
-
   async function handleDownloadFinalRanking() {
     if (isExportingRanking) {
       return;
@@ -331,10 +323,6 @@ export function TournamentView({ tournamentId }: TournamentViewProps) {
               <p className="mt-3 break-words text-[12px] leading-5 text-[var(--s-mid)]">
                 Jugadores: {formatPlayerList(tournament.players.map((player) => player.id), names)}
               </p>
-            </div>
-
-            <div className="flex w-full justify-end sm:w-auto">
-              <ThemeToggle theme={store.theme} onToggle={handleThemeToggle} />
             </div>
           </div>
 

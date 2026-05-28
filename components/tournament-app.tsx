@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { BrandLogo } from "@/components/brand-logo";
 import { NewTournamentForm } from "@/components/new-tournament-form";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { defaultStore, loadStore, saveStore } from "@/lib/storage";
 import { createPlayers, createTournament } from "@/lib/tournament";
 import { GamesPerMatch, PairingMode, PlayMode, Tournament, TournamentFormat, TournamentStore } from "@/lib/types";
@@ -64,7 +63,7 @@ export default function TournamentApp() {
     }
 
     saveStore(store);
-    document.documentElement.classList.toggle("dark", store.theme === "dark");
+    document.documentElement.classList.add("dark");
   }, [hasLoadedStore, store]);
 
   function handleCreateTournament(payload: {
@@ -116,13 +115,6 @@ export default function TournamentApp() {
     });
   }
 
-  function handleThemeToggle() {
-    setStore((current) => ({
-      ...current,
-      theme: current.theme === "dark" ? "light" : "dark",
-    }));
-  }
-
   function handleClearSavedPlayers() {
     setStore((current) => ({
       ...current,
@@ -162,7 +154,6 @@ export default function TournamentApp() {
                 v3 · local
               </span>
             </div>
-            <ThemeToggle theme={store.theme} onToggle={handleThemeToggle} />
           </div>
 
           <div className="grid gap-5 lg:col-span-2 lg:grid-cols-[minmax(0,0.95fr)_minmax(20rem,0.75fr)] lg:items-end">
