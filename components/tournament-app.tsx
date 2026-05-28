@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BrandLogo } from "@/components/brand-logo";
 import { NewTournamentForm } from "@/components/new-tournament-form";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -29,24 +29,25 @@ function mergeSavedPlayers(current: string[], incoming: string[]) {
 }
 
 export default function TournamentApp() {
-  const isClient = useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false,
-  );
   const router = useRouter();
-  const [store, setStore] = useState<TournamentStore>(() => loadStore());
+  const [hasLoadedStore, setHasLoadedStore] = useState(false);
+  const [store, setStore] = useState<TournamentStore>(defaultStore);
   const formSectionRef = useRef<HTMLDivElement | null>(null);
   const savedSectionRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!isClient) {
+    setStore(loadStore());
+    setHasLoadedStore(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hasLoadedStore) {
       return;
     }
 
     saveStore(store);
     document.documentElement.classList.toggle("dark", store.theme === "dark");
-  }, [isClient, store]);
+  }, [hasLoadedStore, store]);
 
   function handleCreateTournament(payload: {
     name: string;
@@ -124,10 +125,6 @@ export default function TournamentApp() {
       behavior: "smooth",
       block: "start",
     });
-  }
-
-  if (!isClient) {
-    return <main className="min-h-screen bg-[var(--app-bg)]" />;
   }
 
   const tournaments = store.tournaments ?? defaultStore.tournaments;
