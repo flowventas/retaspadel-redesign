@@ -272,86 +272,96 @@ export function NewTournamentForm({
 
   return (
     <>
-      <section className="app-card grid gap-6 p-6 md:p-8">
-        <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+      <section className="s-card grid gap-6 p-4 md:p-6">
+        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[var(--brand-secondary)]">
-              Nueva reta
+            <p className="s-kicker text-[var(--s-lime)]">
+              Step · configurar
             </p>
-            <h2 className="mt-2 text-3xl font-black tracking-tight text-[var(--app-text)]">
-              Configura la reta y prende la competencia
+            <h2 className="mt-2 font-display text-[36px] uppercase leading-[0.9] tracking-[0.03em] text-[var(--s-text)]">
+              Crear
+              <br />
+              reta.
             </h2>
-            <p className="mt-2 max-w-2xl text-sm text-[var(--muted)]">
+            <p className="mt-3 max-w-2xl text-[13px] leading-5 text-[var(--s-mid)]">
               Elige jugadores, define si van a 5 o 6 juegos y arranca sin complicarte.
             </p>
           </div>
-          <button type="button" onClick={handleUseDemo} className="app-button app-button-primary px-4 py-2 text-sm">
+          <button type="button" onClick={handleUseDemo} className="app-button app-button-secondary px-4 py-3 text-[18px]">
             Probar demo
           </button>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          <label className="grid gap-2 text-sm font-medium text-[var(--app-text)]">
-            Numero de jugadores
-            <div className="grid grid-cols-2 gap-2 rounded-2xl bg-[var(--surface-subtle)] p-1">
+        <div className="grid gap-6 md:grid-cols-2">
+          <label className="grid gap-3">
+            <span className="s-section-label"><span>01 · </span>Cuantos jugadores?</span>
+            <div className="grid grid-cols-4 gap-1.5 md:grid-cols-2">
               {PLAYER_OPTIONS.map((option) => (
                 <button
                   key={option}
                   type="button"
                   onClick={() => handleFormatChange(option)}
-                  className={`rounded-[1rem] px-4 py-3 text-sm font-bold transition ${
+                  className={`border px-2 py-3 text-center ${
                     format === option
-                      ? "bg-[var(--brand-secondary)] text-white shadow-[0_10px_24px_-18px_rgba(15,23,42,0.28)]"
-                      : "text-[var(--muted)] hover:bg-[var(--surface-strong)]"
+                      ? "border-[var(--s-lime)] bg-[var(--s-lime)] text-[var(--s-bg)]"
+                      : "border-[var(--s-line)] bg-transparent text-[var(--s-text)]"
                   }`}
                 >
-                  {option}
+                  <span className="block font-display text-[34px] leading-none">{option}</span>
+                  <span className={`mt-1 block font-mono text-[9px] uppercase tracking-[0.12em] ${format === option ? "text-[var(--s-bg)]/70" : "text-[var(--s-mid)]"}`}>
+                    {option / 4} {option === 8 ? "canchas" : "canchas"}
+                  </span>
                 </button>
               ))}
             </div>
           </label>
 
-          <label className="grid gap-2 text-sm font-medium text-[var(--app-text)]">
-            Juegos por partido
-            <div className="grid grid-cols-2 gap-2 rounded-2xl bg-[var(--surface-subtle)] p-1">
+          <label className="grid gap-3">
+            <span className="s-section-label"><span>02 · </span>Juegos por partido</span>
+            <div className="grid grid-cols-2 gap-1.5">
               {GAME_OPTIONS.map((option) => (
                 <button
                   key={option}
                   type="button"
                   onClick={() => setGamesPerMatch(option)}
                   disabled={playMode === "ladder" && option === 6}
-                  className={`rounded-[1rem] px-4 py-3 text-sm font-bold transition ${
+                  className={`border px-3 py-3 text-center ${
                     gamesPerMatch === option
-                      ? "bg-[var(--brand-secondary)] text-white shadow-[0_10px_24px_-18px_rgba(15,23,42,0.28)]"
-                      : "text-[var(--muted)] hover:bg-[var(--surface-strong)]"
-                  } ${playMode === "ladder" && option === 6 ? "cursor-not-allowed opacity-45 hover:bg-transparent" : ""}`}
+                      ? "border-[var(--s-lime)] bg-[var(--s-lime)] text-[var(--s-bg)]"
+                      : "border-[var(--s-line)] bg-transparent text-[var(--s-text)]"
+                  } ${playMode === "ladder" && option === 6 ? "cursor-not-allowed opacity-40" : ""}`}
                 >
-                  Reta a {option}
+                  <span className="block font-display text-[42px] leading-none">{option}</span>
+                  <span className={`mt-1 block font-mono text-[9px] uppercase tracking-[0.12em] ${gamesPerMatch === option ? "text-[var(--s-bg)]/70" : "text-[var(--s-mid)]"}`}>
+                    juegos {playMode === "ladder" && option === 6 ? "· lock" : ""}
+                  </span>
                 </button>
               ))}
             </div>
             {playMode === "ladder" ? (
-              <p className="text-xs text-[var(--muted)]">En formato escalera la reta siempre se juega a 5 juegos.</p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-[var(--s-amber)]">Escalera siempre se juega a 5.</p>
             ) : null}
           </label>
         </div>
 
-        <label className="grid gap-2 text-sm font-medium text-[var(--app-text)]">
-          Modalidad de parejas
-          <div className="grid gap-2 rounded-2xl bg-[var(--surface-subtle)] p-1 md:grid-cols-2">
+        <label className="grid gap-3">
+          <span className="s-section-label"><span>03 · </span>Modalidad de parejas</span>
+          <div className="grid gap-1.5 md:grid-cols-2">
             {PAIRING_MODE_OPTIONS.map((option) => (
               <button
                 key={option.value}
                 type="button"
                 onClick={() => setPairingMode(option.value)}
-                className={`grid gap-1 rounded-[1rem] px-4 py-3 text-left transition ${
+                className={`grid gap-2 border px-4 py-4 text-left ${
                   pairingMode === option.value
-                    ? "bg-[var(--brand-secondary)] text-white shadow-[0_10px_24px_-18px_rgba(15,23,42,0.28)]"
-                    : "text-[var(--muted)] hover:bg-[var(--surface-strong)]"
+                    ? "border-[var(--s-lime)] bg-[var(--s-surf)] text-[var(--s-text)]"
+                    : "border-[var(--s-line)] bg-transparent text-[var(--s-mid)]"
                 }`}
               >
-                <span className="text-sm font-bold">{option.label}</span>
-                <span className={`text-xs ${pairingMode === option.value ? "text-white/85" : "text-[var(--muted)]"}`}>
+                <span className={`font-display text-[22px] uppercase leading-none ${pairingMode === option.value ? "text-[var(--s-lime)]" : "text-[var(--s-text)]"}`}>
+                  {option.label}
+                </span>
+                <span className="text-[11px] leading-4 text-[var(--s-mid)]">
                   {option.description}
                 </span>
               </button>
@@ -359,62 +369,63 @@ export function NewTournamentForm({
           </div>
         </label>
 
-        <div className="grid gap-3 rounded-[1.5rem] border border-[var(--line)] bg-[var(--surface-subtle)] p-4">
+        <div className="relative grid gap-3 overflow-hidden border border-[var(--s-lime)] bg-[var(--s-surf)] p-4">
+          <span className="absolute inset-0 opacity-10 [background:repeating-linear-gradient(-45deg,var(--s-lime)_0,var(--s-lime)_1px,transparent_1px,transparent_10px)]" />
           <button
             type="button"
             onClick={() => setIsWhatsAppOpen((current) => !current)}
             aria-expanded={isWhatsAppOpen}
             aria-controls="whatsapp-import-panel"
-            className="flex items-center justify-between gap-3 text-left"
+            className="relative flex items-center justify-between gap-3 text-left"
           >
             <div>
-              <p className="text-sm font-semibold text-[var(--app-text)]">Importar desde WhatsApp</p>
-              <p className="mt-1 text-sm text-[var(--muted)]">
+              <p className="font-display text-[24px] uppercase leading-none text-[var(--s-lime)]">Pegar de WhatsApp</p>
+              <p className="mt-2 text-[11px] leading-5 text-[var(--s-mid)]">
                 Pega una reta ya armada y extraemos los nombres automaticamente.
               </p>
             </div>
-            <span className="text-lg font-black text-[var(--brand-secondary)]" aria-hidden="true">
-              {isWhatsAppOpen ? "-" : "+"}
+            <span className="font-display text-[34px] italic leading-none text-[var(--s-lime)]" aria-hidden="true">
+              {isWhatsAppOpen ? "−" : "›"}
             </span>
           </button>
 
-          <div id="whatsapp-import-panel" className="accordion-panel" data-open={isWhatsAppOpen}>
+          <div id="whatsapp-import-panel" className="accordion-panel relative" data-open={isWhatsAppOpen}>
             <div className="accordion-panel-inner">
               <textarea
                 value={whatsAppMessage}
                 onChange={(event) => setWhatsAppMessage(event.target.value)}
                 rows={7}
                 placeholder="Pega aqui el mensaje completo de la reta..."
-                className="app-input w-full px-4 py-4 text-sm"
+                className="app-input mt-3 w-full px-3 py-3 font-mono text-[12px] leading-5"
               />
 
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <button
                   type="button"
                   onClick={handleImportWhatsAppMessage}
-                  className="app-button app-button-secondary px-4 py-3 text-sm"
+                  className="app-button app-button-secondary px-4 py-3 text-[18px]"
                 >
                   Extraer jugadores
                 </button>
 
                 {importMessage ? (
-                  <p className="text-sm text-[var(--muted)]" aria-live="polite">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-[var(--s-mid)]" aria-live="polite">
                     {importMessage}
                   </p>
                 ) : null}
               </div>
 
               {importError ? (
-                <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700" role="alert">
+                <div className="mt-3 border border-[var(--s-red)] bg-[rgba(255,61,77,0.08)] px-4 py-3 text-[12px] font-medium text-[var(--s-red)]" role="alert">
                   {importError}
                 </div>
               ) : null}
 
               {importedNames.length ? (
-                <div className="grid gap-3 rounded-2xl border border-[var(--line)] bg-[var(--surface-strong)] p-4">
+                <div className="mt-3 grid gap-3 border border-[var(--s-lime)] bg-[var(--s-surf)] p-4">
                   <div>
-                    <p className="text-sm font-semibold text-[var(--app-text)]">Jugadores detectados</p>
-                    <p className="text-sm text-[var(--muted)]">
+                    <p className="s-kicker text-[var(--s-lime)]">Detectados</p>
+                    <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.12em] text-[var(--s-mid)]">
                       {importedNames.length} de {format} listos para usar
                     </p>
                   </div>
@@ -423,13 +434,13 @@ export function NewTournamentForm({
                     {importedNames.map((name, index) => (
                       <label
                         key={`imported-player-${index + 1}`}
-                        className="grid gap-1 rounded-xl bg-[var(--surface-subtle)] px-3 py-2"
+                        className="grid gap-1 border border-[var(--s-line)] bg-[var(--s-surf-2)] px-3 py-2"
                       >
-                        <span className="text-xs font-bold text-[var(--muted)]">{index + 1}.</span>
+                        <span className="font-mono text-[10px] font-bold text-[var(--s-mid)]">{String(index + 1).padStart(2, "0")}</span>
                         <input
                           value={name}
                           onChange={(event) => handleImportedNameChange(index, event.target.value)}
-                          className="min-w-0 bg-transparent text-sm font-semibold text-[var(--app-text)] outline-none"
+                          className="min-w-0 bg-transparent text-[13px] font-semibold text-[var(--s-text)] outline-none"
                         />
                       </label>
                     ))}
@@ -439,14 +450,14 @@ export function NewTournamentForm({
                     <button
                       type="button"
                       onClick={handleClearImportedPlayers}
-                      className="app-button app-button-danger px-3 py-2 text-xs"
+                      className="app-button app-button-danger px-3 py-2 text-[16px]"
                     >
                       Vaciar lista
                     </button>
                     <button
                       type="button"
                       onClick={handleUseImportedPlayers}
-                      className="app-button app-button-primary px-4 py-3 text-sm"
+                      className="app-button app-button-primary px-4 py-3 text-[18px]"
                     >
                       {importedNames.length === format ? "Arrancar con estos jugadores" : "Completar jugadores detectados"}
                     </button>
@@ -457,14 +468,14 @@ export function NewTournamentForm({
           </div>
         </div>
 
-        <div className="flex items-center justify-between gap-4">
+        <div className="grid gap-3 border-y border-[var(--s-line)] py-4 sm:grid-cols-[1fr_1.1fr] sm:items-center">
           <div>
-            <p className="text-sm font-semibold text-[var(--muted)]">Resumen</p>
-            <p className="text-2xl font-black text-[var(--app-text)]">
+            <p className="s-kicker">Resumen</p>
+            <p className="mt-1 font-display text-[30px] uppercase leading-none text-[var(--s-text)]">
               {format} jugadores - {gamesPerMatch} juegos
             </p>
           </div>
-          <p className="max-w-sm text-right text-sm text-[var(--muted)]">
+          <p className="text-[12px] leading-5 text-[var(--s-mid)] sm:text-right">
             {pairingMode === "fixed"
               ? "En parejas fijas, el orden de captura define las parejas: 1-2, 3-4, 5-6..."
               : "Al iniciar, la app te ira pidiendo un nombre por jugador en popups consecutivos."}
@@ -474,21 +485,21 @@ export function NewTournamentForm({
         <button
           type="button"
           onClick={() => beginStartFlow()}
-          className="app-button app-button-primary px-6 py-4 text-base"
+          className="s-big-btn"
         >
-          Iniciar reta
+          Arrancar reta ▸
         </button>
       </section>
 
       {canUsePortal && isPlayModeModalOpen
         ? createPortal(
-            <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/55 px-4">
-              <div className="w-full max-w-md rounded-[2rem] border border-[var(--line)] bg-[var(--card)] p-6 shadow-[0_18px_42px_-28px_rgba(15,23,42,0.24)]">
-                <p className="text-sm font-bold uppercase tracking-[0.25em] text-[var(--brand-secondary)]">
+            <div className="fixed inset-0 z-50 grid place-items-center bg-black/82 px-4">
+              <div className="w-full max-w-md border border-[var(--s-line-hi)] bg-[var(--s-bg)] p-5">
+                <p className="s-kicker text-[var(--s-lime)]">
                   Formato de reta
                 </p>
-                <h3 className="mt-2 text-3xl font-black text-[var(--app-text)]">Como quieres jugar esta reta?</h3>
-                <p className="mt-3 text-sm text-[var(--muted)]">
+                <h3 className="mt-2 font-display text-[36px] uppercase leading-[0.9] text-[var(--s-text)]">Como quieres jugar esta reta?</h3>
+                <p className="mt-3 text-[12px] leading-5 text-[var(--s-mid)]">
                   La modalidad de parejas que elegiste se respetara dentro del formato.
                 </p>
 
@@ -500,10 +511,10 @@ export function NewTournamentForm({
                       completeStartFlow(pendingNames ?? undefined, "standard");
                       setPendingNames(null);
                     }}
-                    className="grid gap-1 rounded-[1.5rem] border border-[var(--line)] bg-[var(--surface-strong)] px-4 py-4 text-left transition hover:border-[var(--brand-primary)]"
+                    className="grid gap-2 border border-[var(--s-line)] bg-[var(--s-surf)] px-4 py-4 text-left"
                   >
-                    <span className="text-base font-black text-[var(--app-text)]">Rotativo</span>
-                    <span className="text-sm text-[var(--muted)]">La app rota rondas como hasta ahora.</span>
+                    <span className="font-display text-[24px] uppercase leading-none text-[var(--s-lime)]">Rotativo</span>
+                    <span className="text-[12px] leading-5 text-[var(--s-mid)]">La app rota rondas como hasta ahora.</span>
                   </button>
 
                   <button
@@ -513,10 +524,10 @@ export function NewTournamentForm({
                       completeStartFlow(pendingNames ?? undefined, "ladder");
                       setPendingNames(null);
                     }}
-                    className="grid gap-1 rounded-[1.5rem] border border-[var(--line)] bg-[var(--surface-strong)] px-4 py-4 text-left transition hover:border-[var(--brand-primary)]"
+                    className="grid gap-2 border border-[var(--s-line)] bg-[var(--s-surf)] px-4 py-4 text-left"
                   >
-                    <span className="text-base font-black text-[var(--app-text)]">Escalera</span>
-                    <span className="text-sm text-[var(--muted)]">
+                    <span className="font-display text-[24px] uppercase leading-none text-[var(--s-text)]">Escalera</span>
+                    <span className="text-[12px] leading-5 text-[var(--s-mid)]">
                       Los jugadores o parejas suben y bajan de cancha segun resultados.
                     </span>
                   </button>
@@ -529,7 +540,7 @@ export function NewTournamentForm({
                       setIsPlayModeModalOpen(false);
                       setPendingNames(null);
                     }}
-                    className="app-button app-button-secondary px-4 py-3 text-sm"
+                    className="app-button app-button-secondary px-4 py-3 text-[18px]"
                   >
                     Cancelar
                   </button>
@@ -542,22 +553,22 @@ export function NewTournamentForm({
 
       {canUsePortal && isModalOpen
         ? createPortal(
-            <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/55 px-4">
-              <div className="w-full max-w-md rounded-[2rem] border border-[var(--line)] bg-[var(--card)] p-6 shadow-[0_18px_42px_-28px_rgba(15,23,42,0.24)]">
+            <div className="fixed inset-0 z-50 grid place-items-center bg-black/82 px-4">
+              <div className="w-full max-w-md border border-[var(--s-line-hi)] bg-[var(--s-bg)] p-5">
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-sm font-bold uppercase tracking-[0.25em] text-[var(--brand-secondary)]">
+                    <p className="s-kicker text-[var(--s-lime)]">
                       Jugador {currentIndex + 1}
                     </p>
-                    <h3 className="mt-2 text-3xl font-black text-[var(--app-text)]">Captura el nombre</h3>
+                    <h3 className="mt-2 font-display text-[36px] uppercase leading-[0.9] text-[var(--s-text)]">Captura el nombre</h3>
                   </div>
-                  <span className="rounded-full bg-[var(--surface-soft)] px-3 py-1 text-sm font-bold text-[var(--muted)]">
+                  <span className="s-chip px-3 py-2">
                     {progress}
                   </span>
                 </div>
 
-                <label className="mt-6 grid gap-2 text-sm font-medium text-[var(--app-text)]">
-                  Nombre del jugador
+                <label className="mt-6 grid gap-2">
+                  <span className="s-section-label">Nombre del jugador</span>
                   <input
                     value={draftName}
                     onChange={(event) => setDraftName(event.target.value)}
@@ -568,7 +579,7 @@ export function NewTournamentForm({
                         handleNextPlayer();
                       }
                     }}
-                    className="app-input px-4 py-4 text-lg"
+                    className="app-input px-4 py-4 text-[16px]"
                     placeholder={`Jugador ${currentIndex + 1}`}
                   />
                 </label>
@@ -579,24 +590,24 @@ export function NewTournamentForm({
                       type="button"
                       onClick={() => setIsRecentOpen((current) => !current)}
                       aria-expanded={isRecentOpen}
-                      className="inline-flex items-center justify-between rounded-2xl border border-[var(--line)] bg-[var(--surface-strong)] px-4 py-3 text-left text-sm font-semibold text-[var(--app-text)] transition hover:border-[var(--brand-primary)]"
+                      className="inline-flex items-center justify-between border border-[var(--s-line)] bg-[var(--s-surf)] px-4 py-3 text-left text-[12px] font-semibold uppercase tracking-[0.08em] text-[var(--s-text)]"
                     >
                       <span>Jugadores recientes</span>
-                      <span aria-hidden="true" className="text-base">
+                      <span aria-hidden="true" className="font-display text-[18px]">
                         {isRecentOpen ? "^" : "v"}
                       </span>
                     </button>
 
                     {isRecentOpen ? (
-                      <div className="grid max-h-64 gap-2 overflow-y-auto rounded-2xl border border-[var(--line)] bg-[var(--surface-strong)] p-3">
+                      <div className="grid max-h-64 gap-2 overflow-y-auto border border-[var(--s-line)] bg-[var(--s-surf)] p-3">
                         <div className="mb-1 flex items-center justify-between gap-3">
-                          <p className="text-xs font-bold uppercase tracking-[0.22em] text-[var(--muted)]">
+                          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--s-mid)]">
                             Guardados
                           </p>
                           <button
                             type="button"
                             onClick={handleClearRecentPlayers}
-                            className="text-xs font-bold text-[var(--danger-text)] transition hover:opacity-80"
+                            className="font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--s-red)]"
                           >
                             Borrar lista
                           </button>
@@ -605,12 +616,12 @@ export function NewTournamentForm({
                         {suggestedPlayers.map((name) => (
                           <div
                             key={name}
-                            className="flex items-center gap-2 rounded-xl transition hover:bg-[var(--surface-subtle)]"
+                            className="flex items-center gap-2 border border-transparent"
                           >
                             <button
                               type="button"
                               onClick={() => handlePickSuggestedPlayer(name)}
-                              className="min-w-0 flex-1 rounded-xl px-3 py-2 text-left text-sm font-semibold text-[var(--app-text)] transition hover:text-[var(--brand-secondary)]"
+                              className="min-w-0 flex-1 px-3 py-2 text-left text-[13px] font-semibold text-[var(--s-text)]"
                             >
                               {name}
                             </button>
@@ -619,7 +630,7 @@ export function NewTournamentForm({
                               onClick={() => onRemoveSavedPlayer(name)}
                               aria-label={`Borrar ${name}`}
                               title={`Borrar ${name}`}
-                              className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-sm font-bold text-[var(--danger-text)] transition hover:bg-[var(--danger-bg)]"
+                              className="grid h-8 w-8 shrink-0 place-items-center font-mono text-[12px] font-bold text-[var(--s-red)]"
                             >
                               x
                             </button>
@@ -631,7 +642,7 @@ export function NewTournamentForm({
                 ) : null}
 
                 {error ? (
-                  <div className="mt-4 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700" role="alert">
+                  <div className="mt-4 border border-[var(--s-red)] bg-[rgba(255,61,77,0.08)] px-4 py-3 text-[12px] font-medium text-[var(--s-red)]" role="alert">
                     {error}
                   </div>
                 ) : null}
@@ -640,14 +651,14 @@ export function NewTournamentForm({
                   <button
                     type="button"
                     onClick={closePlayerModal}
-                    className="app-button app-button-secondary px-4 py-3 text-sm"
+                    className="app-button app-button-secondary px-4 py-3 text-[18px]"
                   >
                     Cancelar
                   </button>
                   <button
                     type="button"
                     onClick={handleNextPlayer}
-                    className="app-button app-button-primary px-5 py-3 text-sm"
+                    className="app-button app-button-primary px-5 py-3 text-[18px]"
                   >
                     {currentIndex === format - 1 ? "Generar reta" : "Siguiente jugador"}
                   </button>
