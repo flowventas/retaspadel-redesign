@@ -109,6 +109,9 @@ export function TournamentView({ tournamentId }: TournamentViewProps) {
 
   const tournament = maybeTournament;
   const ranking = calculateRanking(tournament);
+  const champion = ranking[0];
+  const runnerUp = ranking[1];
+  const thirdPlace = ranking[2];
   const stats = getPlayerStats(tournament);
   const currentRound = getCurrentRound(tournament);
   const names = playerNameMap(tournament.players);
@@ -385,35 +388,93 @@ export function TournamentView({ tournamentId }: TournamentViewProps) {
         <section className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
           <div className="grid min-w-0 content-start gap-6">
             {tournament.completed ? (
-              <section className="grid gap-6 border border-[var(--s-line)] bg-[var(--s-surf)] p-5">
-                <div>
-                  <p className="s-kicker text-[var(--s-lime)]">
-                    Reta finalizada
-                  </p>
-                  <h2 className="mt-2 font-display text-[36px] uppercase leading-[0.9] text-[var(--s-text)]">Tabla de poder final y estadisticas</h2>
-                </div>
+              <section className="grid gap-0 border border-[var(--s-line)] bg-[var(--s-surf)]">
+                <div className="relative overflow-hidden border-b border-[var(--s-line)]">
+                  <div className="pointer-events-none absolute inset-0 opacity-[0.16] [background:linear-gradient(90deg,transparent_49%,var(--s-text)_50%,transparent_51%),linear-gradient(0deg,transparent_49%,var(--s-text)_50%,transparent_51%)] [background-size:92px_52px]" />
+                  <div className="relative p-5">
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="s-kicker text-[var(--s-lime)]">★ Reta finalizada</p>
+                      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--s-mid)]">
+                        {new Intl.DateTimeFormat("es-MX", { day: "2-digit", month: "short" }).format(new Date(tournament.createdAt))}
+                      </p>
+                    </div>
 
-                <div className="grid gap-4 md:grid-cols-2">
-                  {stats.map((player, index) => (
-                    <article
-                      key={player.playerId}
-                      className={`border p-5 ${
-                        index === 0 ? "border-[var(--s-lime)] bg-[rgba(212,255,78,0.06)]" : "border-[var(--s-line)] bg-[var(--s-bg)]"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="min-w-0">
-                          <p className="break-words font-display text-[24px] uppercase leading-none text-[var(--s-text)]">{player.name}</p>
-                          <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.1em] text-[var(--s-mid)]">
-                            {player.wins} ganados - {player.draws} empates - {player.losses} perdidos
+                    {champion ? (
+                      <div className="mt-4 grid gap-3">
+                        <p className="s-kicker text-[var(--s-lime)]">★ Campeon</p>
+                        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3">
+                          <div className="min-w-0">
+                            <h2 className="break-words font-display text-[82px] uppercase italic leading-[0.82] tracking-[-0.04em] text-[var(--s-lime)] sm:text-[96px]">
+                              {champion.name}
+                            </h2>
+                            <p className="mt-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--s-text)]">
+                              {champion.points} PTS · {champion.wins}G · DIF {champion.gameDiff >= 0 ? "+" : ""}{champion.gameDiff}
+                            </p>
+                          </div>
+                          <p className="font-display text-[78px] italic leading-[0.82] tracking-[-0.06em] text-[var(--s-text)] opacity-90">
+                            01
                           </p>
                         </div>
-                        <span className="border border-[var(--s-line-hi)] px-3 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.12em] text-[var(--s-mid)]">
-                          {index === 0 ? "Lider de la reta" : `#${index + 1}`}
-                        </span>
                       </div>
-                    </article>
-                  ))}
+                    ) : null}
+                  </div>
+                </div>
+
+                {(runnerUp || thirdPlace) ? (
+                  <div className="grid grid-cols-2 border-b border-[var(--s-line)]">
+                    {[runnerUp, thirdPlace].map((player, index) =>
+                      player ? (
+                        <article
+                          key={player.playerId}
+                          className={`p-4 ${index === 0 ? "border-r border-[var(--s-line)]" : ""}`}
+                        >
+                          <p className="font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--s-mid)]">
+                            {index === 0 ? "Subcampeon" : "Tercero"}
+                          </p>
+                          <p className="mt-2 truncate font-display text-[24px] uppercase leading-none text-[var(--s-text)]">
+                            {player.name}
+                          </p>
+                          <div className="mt-3 flex items-baseline gap-2">
+                            <p className="font-display text-[40px] italic leading-none text-[var(--s-text)]">
+                              {String(index + 2).padStart(2, "0")}
+                            </p>
+                            <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-[var(--s-mid)]">
+                              {player.points} PTS
+                              <br />
+                              {player.gameDiff >= 0 ? "+" : ""}{player.gameDiff} DIF
+                            </p>
+                          </div>
+                        </article>
+                      ) : null,
+                    )}
+                  </div>
+                ) : null}
+
+                <div className="grid gap-3 p-4">
+                  <p className="s-section-label"><span>01 · </span>Estadisticas finales</p>
+                  <div className="grid gap-2">
+                    {stats.slice(0, 6).map((player, index) => (
+                      <article
+                        key={player.playerId}
+                        className={`grid grid-cols-[42px_1fr_auto] items-center gap-3 border p-3 ${
+                          index === 0 ? "border-[var(--s-lime)] bg-[rgba(212,255,78,0.08)]" : "border-[var(--s-line)] bg-[var(--s-bg)]"
+                        }`}
+                      >
+                        <p className={`font-display text-[24px] italic leading-none ${index === 0 ? "text-[var(--s-lime)]" : "text-[var(--s-text)]"}`}>
+                          {String(index + 1).padStart(2, "0")}
+                        </p>
+                        <div className="min-w-0">
+                          <p className="truncate text-[13px] font-semibold text-[var(--s-text)]">{player.name}</p>
+                          <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.08em] text-[var(--s-mid)]">
+                            <span className="text-[var(--s-lime)]">{player.wins}G</span> · <span className="text-[var(--s-red)]">{player.losses}P</span> · {player.draws}E
+                          </p>
+                        </div>
+                        <p className={`font-display text-[24px] italic leading-none ${index === 0 ? "text-[var(--s-lime)]" : "text-[var(--s-text)]"}`}>
+                          {player.points}
+                        </p>
+                      </article>
+                    ))}
+                  </div>
                 </div>
               </section>
             ) : currentRound ? (
@@ -463,16 +524,6 @@ export function TournamentView({ tournamentId }: TournamentViewProps) {
               <div ref={mobileRankingRef}>
                 <RankingTable rows={ranking} />
               </div>
-              {tournament.completed ? (
-                <button
-                  type="button"
-                  onClick={handleDownloadFinalRanking}
-                  disabled={isExportingRanking}
-                  className="app-button app-button-secondary w-full px-4 py-3 text-[18px] disabled:cursor-wait"
-                >
-                  {isExportingRanking ? "Preparando PNG..." : "Descargar tabla de poder en PNG"}
-                </button>
-              ) : null}
             </div>
 
             <section className="motion-card motion-delay-2 grid min-w-0 gap-4">
@@ -493,6 +544,16 @@ export function TournamentView({ tournamentId }: TournamentViewProps) {
                 <p className="s-section-label"><span>03 · </span>Acciones</p>
                 <h2 className="mt-2 font-display text-[26px] uppercase leading-none text-[var(--s-text)]">Opciones de la reta</h2>
               </div>
+              {tournament.completed ? (
+                <button
+                  type="button"
+                  onClick={handleDownloadFinalRanking}
+                  disabled={isExportingRanking}
+                  className="s-big-btn disabled:cursor-wait disabled:opacity-60"
+                >
+                  {isExportingRanking ? "Preparando PNG..." : "Descargar PNG ▾"}
+                </button>
+              ) : null}
               <div className="grid gap-3 sm:flex sm:flex-wrap">
                 <button
                   type="button"
@@ -514,13 +575,13 @@ export function TournamentView({ tournamentId }: TournamentViewProps) {
               <RankingTable rows={ranking} />
             </div>
             {tournament.completed ? (
-                <button
-                  type="button"
-                  onClick={handleDownloadFinalRanking}
-                  disabled={isExportingRanking}
-                  className="app-button app-button-secondary w-full px-4 py-3 text-[18px] disabled:cursor-wait"
-                >
-                {isExportingRanking ? "Preparando PNG..." : "Descargar tabla de poder en PNG"}
+              <button
+                type="button"
+                onClick={handleDownloadFinalRanking}
+                disabled={isExportingRanking}
+                className="s-big-btn disabled:cursor-wait disabled:opacity-60"
+              >
+                {isExportingRanking ? "Preparando PNG..." : "Descargar PNG ▾"}
               </button>
             ) : null}
           </div>

@@ -3,7 +3,7 @@ export async function exportNodeAsPng(node: HTMLElement, filename: string) {
   const dataUrl = await toPng(node, {
     cacheBust: true,
     pixelRatio: 2,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#000000",
   });
 
   const link = document.createElement("a");
