@@ -115,6 +115,7 @@ export function TournamentView({ tournamentId }: TournamentViewProps) {
   const currentRound = getCurrentRound(tournament);
   const names = playerNameMap(tournament.players);
   const progress = tournamentProgress(tournament);
+  const startingCourt = tournament.startingCourt ?? 1;
   const finishedRounds = tournament.rounds.filter((round) => round.status === "completed");
   const orderedFinishedRounds = [...finishedRounds].sort((left, right) => right.number - left.number);
   const editableHistoryRoundId = tournament.playMode === "ladder" ? orderedFinishedRounds[0]?.id : undefined;
@@ -318,7 +319,8 @@ export function TournamentView({ tournamentId }: TournamentViewProps) {
                 {tournament.format} jugadores, partidos a {tournament.gamesPerMatch} juegos,{" "}
                 {tournament.totalRounds} rondas,{" "}
                 {tournament.playMode === "ladder" ? "formato escalera" : "formato rotativo"},{" "}
-                {tournament.pairingMode === "fixed" ? "parejas fijas" : "parejas rotativas"}
+                {tournament.pairingMode === "fixed" ? "parejas fijas" : "parejas rotativas"},{" "}
+                canchas {startingCourt}-{startingCourt + tournament.format / 4 - 1}
               </p>
               <p className="mt-3 break-words text-[12px] leading-5 text-[var(--s-mid)]">
                 Jugadores: {formatPlayerList(tournament.players.map((player) => player.id), names)}
@@ -497,6 +499,7 @@ export function TournamentView({ tournamentId }: TournamentViewProps) {
                       match={match}
                       names={names}
                       gamesPerMatch={tournament.gamesPerMatch}
+                      startingCourt={startingCourt}
                       onAdjustScore={handleAdjustScore}
                     />
                   ))}
@@ -522,6 +525,7 @@ export function TournamentView({ tournamentId }: TournamentViewProps) {
               <RoundHistory
                 rounds={orderedFinishedRounds}
                 names={names}
+                startingCourt={startingCourt}
                 onEdit={handleEditRound}
                 editableRoundId={editableHistoryRoundId}
               />

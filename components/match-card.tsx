@@ -1,10 +1,11 @@
-import { formatTeam, matchWinner } from "@/lib/tournament";
+import { formatTeam, getDisplayCourt, matchWinner } from "@/lib/tournament";
 import { GamesPerMatch, Match } from "@/lib/types";
 
 type MatchCardProps = {
   match: Match;
   names: Record<string, string>;
   gamesPerMatch: GamesPerMatch;
+  startingCourt?: number;
   disabled?: boolean;
   onAdjustScore: (matchId: string, delta: -1 | 1) => void;
 };
@@ -53,6 +54,7 @@ export function MatchCard({
   match,
   names,
   gamesPerMatch,
+  startingCourt = 1,
   disabled = false,
   onAdjustScore,
 }: MatchCardProps) {
@@ -63,6 +65,7 @@ export function MatchCard({
   const finished = total === gamesPerMatch;
   const teamAName = formatTeam(match, "A", names);
   const teamBName = formatTeam(match, "B", names);
+  const courtLabel = getDisplayCourt(match.court, startingCourt);
 
   return (
     <article className={`relative min-w-0 overflow-hidden border bg-[var(--s-surf)] ${finished ? "border-[var(--s-lime)]" : "border-[var(--s-line)]"}`}>
@@ -71,10 +74,10 @@ export function MatchCard({
       <div className="relative flex items-center justify-between gap-3 border-b border-[var(--s-line)] px-3 py-2.5">
         <div className="flex min-w-0 items-center gap-2">
           <span className="grid h-[18px] w-[18px] place-items-center bg-[var(--s-lime)] font-display text-[13px] text-[var(--s-bg)]">
-            {match.court}
+            {courtLabel}
           </span>
           <p className="truncate font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--s-text)]">
-            Cancha {match.court}
+            Cancha {courtLabel}
           </p>
         </div>
         <p className={`whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.14em] ${finished ? "text-[var(--s-lime)]" : total ? "text-[var(--s-amber)]" : "text-[var(--s-mid)]"}`}>

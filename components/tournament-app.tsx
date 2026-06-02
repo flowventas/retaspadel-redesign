@@ -72,6 +72,7 @@ export default function TournamentApp() {
     gamesPerMatch: GamesPerMatch;
     pairingMode: PairingMode;
     playMode: PlayMode;
+    startingCourt: number;
     names: string[];
   }) {
     const tournament = createTournament(
@@ -81,6 +82,7 @@ export default function TournamentApp() {
       payload.gamesPerMatch,
       payload.pairingMode,
       payload.playMode,
+      payload.startingCourt,
     );
 
     const nextStore = {

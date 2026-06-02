@@ -1,14 +1,15 @@
-import { formatPlayerList, formatTeam, roundHasScores } from "@/lib/tournament";
+import { formatPlayerList, formatTeam, getDisplayCourt, roundHasScores } from "@/lib/tournament";
 import { Round } from "@/lib/types";
 
 type RoundHistoryProps = {
   rounds: Round[];
   names: Record<string, string>;
+  startingCourt?: number;
   onEdit: (roundId: string) => void;
   editableRoundId?: string;
 };
 
-export function RoundHistory({ rounds, names, onEdit, editableRoundId }: RoundHistoryProps) {
+export function RoundHistory({ rounds, names, startingCourt = 1, onEdit, editableRoundId }: RoundHistoryProps) {
   return (
     <div className="grid min-w-0 gap-3">
       {rounds.map((round) => (
@@ -54,7 +55,7 @@ export function RoundHistory({ rounds, names, onEdit, editableRoundId }: RoundHi
                 className="grid min-w-0 grid-cols-[auto_1fr_auto] items-center gap-3 border border-[var(--s-line)] bg-[var(--s-bg)] px-3 py-3 text-[12px] text-[var(--s-text)]"
               >
                 <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--s-mid)]">
-                  C{match.court}
+                  C{getDisplayCourt(match.court, startingCourt)}
                 </span>
                 <span className="min-w-0 leading-5">
                   <span className="block truncate font-semibold text-[var(--s-text)]">{formatTeam(match, "A", names)}</span>

@@ -65,6 +65,7 @@ export type Tournament = {
   gamesPerMatch: GamesPerMatch;
   pairingMode: PairingMode;
   playMode: PlayMode;
+  startingCourt?: number;
   createdAt: string;
   players: Player[];
   rounds: Round[];

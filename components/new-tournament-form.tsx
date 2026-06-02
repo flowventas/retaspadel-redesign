@@ -13,6 +13,7 @@ type NewTournamentFormProps = {
     gamesPerMatch: GamesPerMatch;
     pairingMode: PairingMode;
     playMode: PlayMode;
+    startingCourt: number;
     names: string[];
   }) => void;
   savedPlayers: string[];
@@ -41,6 +42,7 @@ export function NewTournamentForm({
   const [gamesPerMatch, setGamesPerMatch] = useState<GamesPerMatch>(6);
   const [pairingMode, setPairingMode] = useState<PairingMode>("rotating");
   const [playMode, setPlayMode] = useState<PlayMode>("standard");
+  const [startingCourt, setStartingCourt] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPlayModeModalOpen, setIsPlayModeModalOpen] = useState(false);
   const [isRecentOpen, setIsRecentOpen] = useState(false);
@@ -102,6 +104,7 @@ export function NewTournamentForm({
         gamesPerMatch: nextGamesPerMatch,
         pairingMode,
         playMode: nextPlayMode,
+        startingCourt,
         names: initialNames,
       });
       setWhatsAppMessage("");
@@ -180,6 +183,7 @@ export function NewTournamentForm({
         gamesPerMatch,
         pairingMode,
         playMode,
+        startingCourt,
         names: currentNames,
       });
       closePlayerModal();
@@ -365,6 +369,29 @@ export function NewTournamentForm({
                 </span>
               </button>
             ))}
+          </div>
+        </label>
+
+        <label className="grid gap-3">
+          <span className="s-section-label"><span>04 · </span>Cancha inicial</span>
+          <div className="grid grid-cols-[1fr_auto] items-stretch gap-2">
+            <input
+              type="number"
+              min={1}
+              inputMode="numeric"
+              value={startingCourt}
+              onChange={(event) => {
+                const nextCourt = Number.parseInt(event.target.value, 10);
+                setStartingCourt(Number.isFinite(nextCourt) ? Math.max(1, nextCourt) : 1);
+              }}
+              className="app-input min-w-0 px-4 py-3 font-display text-[34px] leading-none text-[var(--s-text)]"
+              aria-label="Cancha inicial"
+            />
+            <div className="grid min-w-[112px] place-items-center border border-[var(--s-line)] bg-[var(--s-surf-2)] px-3 text-center">
+              <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-[var(--s-mid)]">
+                C{startingCourt}-C{startingCourt + format / 4 - 1}
+              </span>
+            </div>
           </div>
         </label>
 

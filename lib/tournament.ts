@@ -511,6 +511,7 @@ export function createTournament(
   gamesPerMatch: GamesPerMatch,
   pairingMode: PairingMode = "rotating",
   playMode: PlayMode = "standard",
+  startingCourt = 1,
 ): Tournament {
   const rounds = generateRounds(players, format, pairingMode, playMode);
   return {
@@ -520,6 +521,7 @@ export function createTournament(
     gamesPerMatch,
     pairingMode,
     playMode,
+    startingCourt,
     createdAt: new Date().toISOString(),
     players,
     rounds,
@@ -919,7 +921,7 @@ export function exportTournamentCsv(tournament: Tournament) {
     ...ranking.map((row, index) =>
       [
         index + 1,
-        `"${row.name}"`,
+          `"${row.name}"`,
         row.points,
         row.played,
         row.wins,
@@ -939,7 +941,7 @@ export function exportTournamentCsv(tournament: Tournament) {
       lines.push(
         [
           round.number,
-          match.court,
+          getDisplayCourt(match.court, tournament.startingCourt),
           `"${match.teamA.join(" / ")}"`,
           match.score?.teamA ?? "",
           match.score?.teamB ?? "",
@@ -973,6 +975,10 @@ export function formatPlayerList(playerIds: string[], names: Record<string, stri
   return playerIds.map((playerId) => names[playerId]).join(", ");
 }
 
+export function getDisplayCourt(court: number, startingCourt = 1) {
+  return startingCourt + court - 1;
+}
+
 export function roundHasScores(round: Round) {
   return round.matches.some((match) => match.score !== null);
 }
@@ -994,6 +1000,7 @@ export function duplicateTournament(tournament: Tournament) {
     tournament.gamesPerMatch,
     tournament.pairingMode,
     tournament.playMode,
+    tournament.startingCourt,
   );
 }
 

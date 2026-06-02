@@ -17,6 +17,7 @@ function normalizeTournament(tournament: Tournament): Tournament {
     gamesPerMatch: (tournament.gamesPerMatch ?? 6) as GamesPerMatch,
     pairingMode: (tournament.pairingMode ?? "rotating") as PairingMode,
     playMode: (tournament.playMode ?? "standard") as PlayMode,
+    startingCourt: Math.max(1, Math.trunc(tournament.startingCourt ?? 1)),
     totalRounds: tournament.totalRounds ?? tournament.rounds.length,
   };
 }
