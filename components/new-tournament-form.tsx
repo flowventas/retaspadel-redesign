@@ -223,7 +223,6 @@ export function NewTournamentForm({
       setFormat(detectedFormat);
     }
 
-    setPairingMode(parsed.pairingMode);
     setImportedNames(detectedFormat ? parsed.names.slice(0, detectedFormat) : parsed.names);
     setImportError("");
 
@@ -243,13 +242,13 @@ export function NewTournamentForm({
 
     if (parsed.totalDetected > effectiveFormat) {
       setImportMessage(
-        `Ajustamos la reta a ${parsed.totalDetected} jugadores segun el mensaje detectado${parsed.pairingMode === "fixed" ? " y marcamos parejas fijas." : "."}`,
+        `Ajustamos la reta a ${parsed.totalDetected} jugadores segun el mensaje detectado y respetamos tus selecciones.`,
       );
       return;
     }
 
     setImportMessage(
-      `Detectamos y ajustamos la reta a ${detectedFormat} jugadores${parsed.pairingMode === "fixed" ? " con parejas fijas." : "."}`,
+      `Detectamos y ajustamos la reta a ${detectedFormat} jugadores. Tus selecciones se mantienen.`,
     );
   }
 
