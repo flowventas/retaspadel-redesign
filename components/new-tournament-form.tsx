@@ -430,34 +430,34 @@ export function NewTournamentForm({
                     </p>
                   </div>
 
-                  <div className="grid gap-2 sm:grid-cols-2">
+                  <div className="grid max-h-[42vh] gap-2 overflow-y-auto pr-1 sm:max-h-none sm:grid-cols-2 sm:overflow-visible sm:pr-0">
                     {importedNames.map((name, index) => (
                       <label
                         key={`imported-player-${index + 1}`}
-                        className="grid gap-1 border border-[var(--s-line)] bg-[var(--s-surf-2)] px-3 py-2"
+                        className="grid grid-cols-[2.25rem_1fr] items-center gap-2 border border-[var(--s-line)] bg-[var(--s-surf-2)] px-2 py-2 sm:grid-cols-1 sm:items-start sm:px-3"
                       >
                         <span className="font-mono text-[10px] font-bold text-[var(--s-mid)]">{String(index + 1).padStart(2, "0")}</span>
                         <input
                           value={name}
                           onChange={(event) => handleImportedNameChange(index, event.target.value)}
-                          className="min-w-0 bg-transparent text-[13px] font-semibold text-[var(--s-text)] outline-none"
+                          className="min-w-0 bg-transparent text-[16px] font-semibold text-[var(--s-text)] outline-none sm:text-[13px]"
                         />
                       </label>
                     ))}
                   </div>
 
-                  <div className="flex flex-wrap items-center justify-end gap-2">
+                  <div className="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:justify-end">
                     <button
                       type="button"
                       onClick={handleClearImportedPlayers}
-                      className="app-button app-button-danger px-3 py-2 text-[16px]"
+                      className="app-button app-button-danger w-full px-3 py-2 text-[16px] sm:w-auto"
                     >
                       Vaciar lista
                     </button>
                     <button
                       type="button"
                       onClick={handleUseImportedPlayers}
-                      className="app-button app-button-primary px-4 py-3 text-[18px]"
+                      className="app-button app-button-primary w-full px-4 py-3 text-[18px] sm:w-auto"
                     >
                       {importedNames.length === format ? "Arrancar con estos jugadores" : "Completar jugadores detectados"}
                     </button>
@@ -553,14 +553,14 @@ export function NewTournamentForm({
 
       {canUsePortal && isModalOpen
         ? createPortal(
-            <div className="fixed inset-0 z-50 grid place-items-center bg-black/82 px-4">
-              <div className="w-full max-w-md border border-[var(--s-line-hi)] bg-[var(--s-bg)] p-5">
+            <div className="fixed inset-0 z-50 grid items-start overflow-y-auto bg-black/82 px-4 py-4 sm:place-items-center">
+              <div className="max-h-[calc(100dvh-2rem)] w-full max-w-md overflow-y-auto border border-[var(--s-line-hi)] bg-[var(--s-bg)] p-4 sm:p-5">
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <p className="s-kicker text-[var(--s-lime)]">
                       Jugador {currentIndex + 1}
                     </p>
-                    <h3 className="mt-2 font-display text-[36px] uppercase leading-[0.9] text-[var(--s-text)]">Captura el nombre</h3>
+                    <h3 className="mt-2 font-display text-[30px] uppercase leading-[0.9] text-[var(--s-text)] sm:text-[36px]">Captura el nombre</h3>
                   </div>
                   <span className="s-chip px-3 py-2">
                     {progress}
@@ -599,7 +599,7 @@ export function NewTournamentForm({
                     </button>
 
                     {isRecentOpen ? (
-                      <div className="grid max-h-64 gap-2 overflow-y-auto border border-[var(--s-line)] bg-[var(--s-surf)] p-3">
+                      <div className="grid max-h-40 gap-2 overflow-y-auto border border-[var(--s-line)] bg-[var(--s-surf)] p-3 sm:max-h-64">
                         <div className="mb-1 flex items-center justify-between gap-3">
                           <p className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--s-mid)]">
                             Guardados
@@ -647,18 +647,18 @@ export function NewTournamentForm({
                   </div>
                 ) : null}
 
-                <div className="mt-6 flex items-center justify-between gap-3">
+                <div className="mt-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <button
                     type="button"
                     onClick={closePlayerModal}
-                    className="app-button app-button-secondary px-4 py-3 text-[18px]"
+                    className="app-button app-button-secondary w-full px-4 py-3 text-[18px] sm:w-auto"
                   >
                     Cancelar
                   </button>
                   <button
                     type="button"
                     onClick={handleNextPlayer}
-                    className="app-button app-button-primary px-5 py-3 text-[18px]"
+                    className="app-button app-button-primary w-full px-5 py-3 text-[18px] sm:w-auto"
                   >
                     {currentIndex === format - 1 ? "Generar reta" : "Siguiente jugador"}
                   </button>

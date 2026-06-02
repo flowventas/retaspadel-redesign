@@ -4,8 +4,11 @@ type ParsedWhatsAppPlayers = {
   pairingMode: "rotating" | "fixed";
 };
 
+const MAX_PLAYERS = 20;
+
 const STOP_PATTERNS = [
   /^lista\s+de\s+espera/i,
+  /^en\s+espera$/i,
   /^espera$/i,
   /^suplentes?$/i,
   /^waiting\s+list/i,
@@ -78,6 +81,10 @@ export function parseWhatsAppPlayers(message: string): ParsedWhatsAppPlayers {
   let pairingMode: "rotating" | "fixed" = FIXED_PAIR_HINT.test(message) ? "fixed" : "rotating";
 
   for (const rawLine of message.split(/\r?\n/)) {
+    if (detected.length >= MAX_PLAYERS) {
+      break;
+    }
+
     const line = rawLine.replace(/\u00A0/g, " ").trim();
     if (!line) {
       continue;
@@ -133,6 +140,10 @@ export function parseWhatsAppPlayers(message: string): ParsedWhatsAppPlayers {
 
       seen.add(key);
       detected.push(candidate);
+
+      if (detected.length >= MAX_PLAYERS) {
+        break;
+      }
     }
   }
 
