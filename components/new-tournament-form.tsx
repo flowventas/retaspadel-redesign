@@ -375,18 +375,28 @@ export function NewTournamentForm({
         <label className="grid gap-3">
           <span className="s-section-label"><span>04 · </span>Cancha inicial</span>
           <div className="grid grid-cols-[1fr_auto] items-stretch gap-2">
-            <input
-              type="number"
-              min={1}
-              inputMode="numeric"
-              value={startingCourt}
-              onChange={(event) => {
-                const nextCourt = Number.parseInt(event.target.value, 10);
-                setStartingCourt(Number.isFinite(nextCourt) ? Math.max(1, nextCourt) : 1);
-              }}
-              className="app-input min-w-0 px-4 py-3 font-display text-[34px] leading-none text-[var(--s-text)]"
-              aria-label="Cancha inicial"
-            />
+            <div className="grid grid-cols-[52px_1fr_52px] border border-[var(--s-line)] bg-[var(--s-bg)]">
+              <button
+                type="button"
+                onClick={() => setStartingCourt((current) => Math.max(1, current - 1))}
+                disabled={startingCourt <= 1}
+                className="grid place-items-center border-r border-[var(--s-line)] font-display text-[34px] italic leading-none text-[var(--s-text)] disabled:cursor-not-allowed disabled:text-[var(--s-dim)]"
+                aria-label="Bajar cancha inicial"
+              >
+                −
+              </button>
+              <div className="grid place-items-center px-4 py-3">
+                <span className="font-display text-[34px] leading-none text-[var(--s-text)]">{startingCourt}</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setStartingCourt((current) => current + 1)}
+                className="grid place-items-center border-l border-[var(--s-lime)] bg-[var(--s-lime)] font-display text-[34px] italic leading-none text-[var(--s-bg)]"
+                aria-label="Subir cancha inicial"
+              >
+                +
+              </button>
+            </div>
             <div className="grid min-w-[112px] place-items-center border border-[var(--s-line)] bg-[var(--s-surf-2)] px-3 text-center">
               <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-[var(--s-mid)]">
                 C{startingCourt}-C{startingCourt + format / 4 - 1}
